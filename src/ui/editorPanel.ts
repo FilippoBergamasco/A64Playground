@@ -1,8 +1,8 @@
 import { EditorView, basicSetup } from "codemirror";
 import { EditorState, StateEffect, StateField } from "@codemirror/state";
-import { Decoration, type DecorationSet } from "@codemirror/view";
-import { StreamLanguage } from "@codemirror/language";
-import { gas } from "@codemirror/legacy-modes/mode/gas";
+import { Decoration, type DecorationSet, keymap } from "@codemirror/view";
+import { indentWithTab } from "@codemirror/commands";
+import { a64Language, a64Highlighting } from "./a64Language";
 import type { EmulatorSession } from "../core/session";
 import type { SessionState } from "../core/types";
 
@@ -40,8 +40,10 @@ export class EditorPanel {
         doc: initialSource,
         extensions: [
           basicSetup,
-          StreamLanguage.define(gas),
+          a64Language,
+          a64Highlighting,
           currentLineField,
+          keymap.of([indentWithTab]),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
               session.setSourceText(update.state.doc.toString());

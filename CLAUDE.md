@@ -22,7 +22,7 @@ No test suite exists yet; verification is manual (see the end-to-end flow below)
 - 100% frontend, static hosting only — no server, no API calls
 - Vanilla TypeScript + direct DOM manipulation — no UI framework
 - Vite build tooling
-- **CodeMirror 6** — source editor, using `@codemirror/legacy-modes`' generic `gas` mode for syntax highlighting (no AArch64-aware tokenizer yet)
+- **CodeMirror 6** — source editor, with a minimal hand-rolled `StreamLanguage` (`src/ui/a64Language.ts`) for syntax highlighting: currently only distinguishes `//` line comments from code, no keyword/register/immediate awareness yet
 - **`@alexaltea/keystone-js`** (WASM) — assembles A64 source into machine code bytes
 - **`@alexaltea/unicorn-js/aarch64`** (WASM, per-arch subpath) — emulates execution; exposes register/memory read-write
 - No disassembler library — the "disassembly view" is derived from the assembler's own output (see below), not a real disassembler
@@ -36,6 +36,7 @@ No test suite exists yet; verification is manual (see the end-to-end flow below)
   - `session.ts` — `EmulatorSession`: single source of truth, plain pub/sub (`subscribe`/notify on every mutation), no framework store. `Reset` rewinds registers/memory to the initial state but **keeps the last successful assembly loaded** — Step/Run work immediately without re-assembling.
 - `src/ui/` — DOM rendering only; panels subscribe to `EmulatorSession` and fully re-render on each notification, never call Keystone/Unicorn directly:
   - `editorPanel.ts` — CodeMirror 6 + current-line decoration (CM6 `StateEffect`/`StateField`) driven by the line-map lookup for the current PC
+  - `a64Language.ts` — minimal `StreamLanguage` syntax highlighting (`//` comments vs. everything else)
   - `registerPanel.ts` — NZCV pinned at top; one row per GP register showing X<i>/W<i> together (W is the low 32 bits of X, derived client-side, not separately read); `X30` labeled "LR"; `SP` and `PC` each their own row, PC last. Per-row (not global) hex/decimal/signed toggle, held as local UI state, not in `SessionState`. Diff-highlighting compares against the previous snapshot.
   - `disassemblyPanel.ts` — full-program address/bytes/mnemonic table, current-PC row highlighted
   - `controls.ts` — Assemble / Step / Run / Reset buttons, enable/disable by session status

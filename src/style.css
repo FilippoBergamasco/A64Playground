@@ -4,9 +4,12 @@
   --panel-bg: #fafafa;
   --border: #333333;
   --text: #000000;
-  --muted: #4b4b4b;
+  --muted: #828181;
   --accent: #2458b4;
   --changed: #ffe08a;
+  --syntax-number: #1a7f37;
+  --syntax-register: #8250df;
+  --syntax-label: #9a6700;
   --fmt-hex: #000000;
   --fmt-udec: #f14c4c;
   --fmt-sdec: #569cd6;
@@ -60,6 +63,24 @@ body {
     inset 0 2px 0 var(--accent),
     inset 0 -2px 0 var(--accent),
     inset -2px 0 0 var(--accent);
+}
+
+.cm-a64-comment {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.cm-a64-number {
+  color: var(--syntax-number);
+}
+
+.cm-a64-register {
+  color: var(--syntax-register);
+}
+
+.cm-a64-label {
+  color: var(--syntax-label);
+  font-weight: bold;
 }
 
 .right-pane {

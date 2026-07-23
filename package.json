@@ -13,9 +13,9 @@
     "@alexaltea/unicorn-js": "^2.1.4",
     "@codemirror/commands": "^6.9.1",
     "@codemirror/language": "^6.11.4",
-    "@codemirror/legacy-modes": "^6.5.3",
     "@codemirror/state": "^6.5.2",
     "@codemirror/view": "^6.38.4",
+    "@lezer/highlight": "^1.2.3",
     "codemirror": "^6.0.2"
   },
   "devDependencies": {
