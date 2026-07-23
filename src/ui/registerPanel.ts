@@ -35,6 +35,10 @@ export class RegisterPanel {
 
     this.container.appendChild(this.renderNzcvRow(registers, previousRegisters));
 
+    this.container.appendChild(
+      this.renderSingleRow("pc", "PC", registers.pc, previousRegisters?.pc),
+    );
+
     const gpList = document.createElement("div");
     gpList.className = "register-list";
     for (const gp of registers.gp) {
@@ -45,9 +49,6 @@ export class RegisterPanel {
 
     this.container.appendChild(
       this.renderSingleRow("sp", "SP", registers.sp, previousRegisters?.sp),
-    );
-    this.container.appendChild(
-      this.renderSingleRow("pc", "PC", registers.pc, previousRegisters?.pc),
     );
   }
 
@@ -97,7 +98,7 @@ export class RegisterPanel {
     prevValue: bigint | undefined,
   ): HTMLElement {
     const row = document.createElement("div");
-    row.className = "register-row register-row-special";
+    row.className = "register-row";
 
     const labelEl = document.createElement("span");
     labelEl.className = "register-label";
