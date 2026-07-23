@@ -1,6 +1,6 @@
 import { formatValue, type DataFormat } from "./formatting";
 
-export type DataWidth = 1 | 4 | 8;
+export type DataWidth = 1 | 2 | 4 | 8;
 
 const FORMAT_ORDER: DataFormat[] = ["hex", "udec", "sdec"];
 
@@ -36,7 +36,7 @@ export class DataViewer {
   }
 
   private renderText(): void {
-    const bitWidth = (this.width * 8) as 8 | 32 | 64;
+    const bitWidth = (this.width * 8) as 8 | 16 | 32 | 64;
     this.element.textContent = formatValue(this.value, bitWidth, this.format);
   }
 }

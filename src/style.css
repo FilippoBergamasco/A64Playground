@@ -105,6 +105,10 @@ body {
   flex: 1;
 }
 
+#memory {
+  flex: 1;
+}
+
 .controls-buttons {
   display: flex;
   gap: 8px;
@@ -133,7 +137,8 @@ body {
 }
 
 .register-panel-empty,
-.disassembly-empty {
+.disassembly-empty,
+.memory-panel-empty {
   color: var(--muted);
   font-size: 0.9em;
 }
@@ -188,6 +193,10 @@ body {
 
 .data-viewer-w4 {
   min-width: 11ch;
+}
+
+.data-viewer-w2 {
+  min-width: 7ch;
 }
 
 .data-viewer-w1 {
@@ -256,4 +265,33 @@ tr.current-pc td:last-child {
     inset -1px 0 0 var(--accent),
     inset 0 1px 0 var(--accent),
     inset 0 -1px 0 var(--accent);
+}
+
+.memory-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.memory-table td {
+  padding: 2px 8px 2px 0;
+  white-space: nowrap;
+}
+
+.memory-address {
+  color: var(--muted);
+}
+
+.memory-label {
+  color: var(--text);
+}
+
+.memory-dump {
+  color: var(--accent);
+  border: 3px solid transparent;
+  padding: 0 2px;
+}
+
+.memory-dump.changed {
+  background: var(--changed);
 }

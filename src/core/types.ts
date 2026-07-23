@@ -1,4 +1,5 @@
 export interface LineMapEntry {
+  kind: "code" | "data";
   sourceLineIndex: number;
   sourceLineText: string;
   address: number;
@@ -32,4 +33,7 @@ export interface SessionState {
   registers: RegisterSnapshot | null;
   previousRegisters: RegisterSnapshot | null;
   currentPc: number | null;
+  dataBaseAddress: number | null;
+  dataMemory: Uint8Array | null;
+  previousDataMemory: Uint8Array | null;
 }

@@ -3,6 +3,7 @@ import { EmulatorSession } from "./core/session";
 import { EditorPanel } from "./ui/editorPanel";
 import { RegisterPanel } from "./ui/registerPanel";
 import { DisassemblyPanel } from "./ui/disassemblyPanel";
+import { MemoryPanel } from "./ui/memoryPanel";
 import { Controls } from "./ui/controls";
 import { DEFAULT_EXAMPLE } from "./examples/default";
 
@@ -16,6 +17,7 @@ app.innerHTML = `
     <div class="right-pane">
       <div id="registers" class="panel"></div>
       <div id="disassembly" class="panel"></div>
+      <div id="memory" class="panel"></div>
     </div>
   </div>
 `;
@@ -26,3 +28,4 @@ new Controls(document.querySelector("#controls")!, session);
 new EditorPanel(document.querySelector("#editor")!, session, DEFAULT_EXAMPLE);
 new RegisterPanel(document.querySelector("#registers")!, session);
 new DisassemblyPanel(document.querySelector("#disassembly")!, session);
+new MemoryPanel(document.querySelector("#memory")!, session);

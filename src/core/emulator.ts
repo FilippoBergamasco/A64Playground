@@ -3,6 +3,7 @@ import type { RegisterSnapshot } from "./types";
 interface UnicornInstance {
   mem_map(address: number, size: number, perms: number): void;
   mem_write(address: number, data: Uint8Array): void;
+  mem_read(address: number, size: number): Uint8Array;
   reg_write_i64(regId: number, value: bigint): void;
   reg_read_i64(regId: number): bigint;
   reg_write_i32(regId: number, value: number): void;
@@ -44,9 +45,11 @@ export class Emulator {
   private uc: UnicornModule | null = null;
   private emu: UnicornInstance | null = null;
   private mc: Uint8Array = new Uint8Array(0);
+  private codeByteLength = 0;
 
-  async load(mc: Uint8Array): Promise<void> {
+  async load(mc: Uint8Array, codeByteLength: number): Promise<void> {
     this.mc = mc;
+    this.codeByteLength = codeByteLength;
     this.uc ??= await loadUnicorn();
     if (this.emu) this.emu.close();
     this.emu = new this.uc.Unicorn(this.uc.ARCH_ARM64, this.uc.MODE_ARM);
@@ -72,7 +75,11 @@ export class Emulator {
   }
 
   private endAddress(): number {
-    return CODE_BASE + this.mc.length;
+    return CODE_BASE + this.codeByteLength;
+  }
+
+  readMemory(address: number, length: number): Uint8Array {
+    return this.emu!.mem_read(address, length);
   }
 
   step(): void {

@@ -25,6 +25,7 @@ export class DisassemblyPanel {
     table.className = "disassembly-table";
     const tbody = document.createElement("tbody");
     for (const entry of state.lineMap) {
+      if (entry.kind !== "code") continue;
       const row = document.createElement("tr");
       if (entry.address === state.currentPc) row.className = "current-pc";
 
