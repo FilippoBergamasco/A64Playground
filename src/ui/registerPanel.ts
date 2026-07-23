@@ -1,15 +1,9 @@
 import type { EmulatorSession } from "../core/session";
-import type { RegisterSnapshot, SessionState } from "../core/types";
-import { toDecimal, toHex } from "./formatting";
-
-interface RowMode {
-  mode: "hex" | "dec";
-  signed: boolean;
-}
+import type { GpRegisterValue, RegisterSnapshot, SessionState } from "../core/types";
+import { DataViewer, type DataWidth } from "./dataViewer";
 
 export class RegisterPanel {
-  private rowModes = new Map<string, RowMode>();
-  private lastState!: SessionState;
+  private viewers = new Map<string, DataViewer>();
 
   constructor(
     private container: HTMLElement,
@@ -19,22 +13,16 @@ export class RegisterPanel {
     this.render(session.getState());
   }
 
-  private getRowMode(id: string): RowMode {
-    let mode = this.rowModes.get(id);
-    if (!mode) {
-      mode = { mode: "hex", signed: false };
-      this.rowModes.set(id, mode);
+  private getViewer(id: string, width: DataWidth): DataViewer {
+    let viewer = this.viewers.get(id);
+    if (!viewer) {
+      viewer = new DataViewer(width);
+      this.viewers.set(id, viewer);
     }
-    return mode;
-  }
-
-  private formatValue(id: string, value: bigint, bitWidth: 32 | 64): string {
-    const rowMode = this.getRowMode(id);
-    return rowMode.mode === "hex" ? toHex(value, bitWidth) : toDecimal(value, bitWidth, rowMode.signed);
+    return viewer;
   }
 
   private render(state: SessionState): void {
-    this.lastState = state;
     this.container.replaceChildren();
     if (!state.registers) {
       const empty = document.createElement("div");
@@ -51,15 +39,15 @@ export class RegisterPanel {
     gpList.className = "register-list";
     for (const gp of registers.gp) {
       const prevGp = previousRegisters?.gp[gp.index];
-      gpList.appendChild(this.renderGpRow(gp.index, gp.x, prevGp?.x));
+      gpList.appendChild(this.renderGpRow(gp, prevGp));
     }
     this.container.appendChild(gpList);
 
     this.container.appendChild(
-      this.renderSingleRow("sp", "SP", registers.sp, previousRegisters?.sp, 64),
+      this.renderSingleRow("sp", "SP", registers.sp, previousRegisters?.sp),
     );
     this.container.appendChild(
-      this.renderSingleRow("pc", "PC", registers.pc, previousRegisters?.pc, 64),
+      this.renderSingleRow("pc", "PC", registers.pc, previousRegisters?.pc),
     );
   }
 
@@ -77,28 +65,27 @@ export class RegisterPanel {
     return row;
   }
 
-  private renderGpRow(index: number, x: bigint, prevX: bigint | undefined): HTMLElement {
-    const id = `x${index}`;
+  private renderGpRow(gp: GpRegisterValue, prevGp: GpRegisterValue | undefined): HTMLElement {
     const row = document.createElement("div");
-    const changed = prevX !== undefined && prevX !== x;
-    row.className = `register-row${changed ? " changed" : ""}`;
+    row.className = "register-row";
 
     const label = document.createElement("span");
     label.className = "register-label";
-    label.textContent = index === 30 ? "X30 / LR" : `X${index}`;
+    label.textContent = gp.index === 30 ? "X30 / LR" : `X${gp.index}`;
     row.appendChild(label);
+
+    const xViewer = this.getViewer(`x${gp.index}`, 8);
+    xViewer.update(gp.x, prevGp !== undefined && prevGp.x !== gp.x);
+    row.appendChild(xViewer.element);
 
     const wLabel = document.createElement("span");
     wLabel.className = "register-sublabel";
-    wLabel.textContent = `W${index}`;
+    wLabel.textContent = `W${gp.index}`;
     row.appendChild(wLabel);
 
-    const valueEl = document.createElement("span");
-    valueEl.className = "register-value";
-    valueEl.textContent = this.formatValue(id, x, 64);
-    valueEl.title = "Click to toggle hex/decimal";
-    valueEl.addEventListener("click", () => this.cycleMode(id));
-    row.appendChild(valueEl);
+    const wViewer = this.getViewer(`w${gp.index}`, 4);
+    wViewer.update(BigInt(gp.w), prevGp !== undefined && prevGp.w !== gp.w);
+    row.appendChild(wViewer.element);
 
     return row;
   }
@@ -108,40 +95,19 @@ export class RegisterPanel {
     label: string,
     value: bigint,
     prevValue: bigint | undefined,
-    bitWidth: 32 | 64,
   ): HTMLElement {
     const row = document.createElement("div");
-    const changed = prevValue !== undefined && prevValue !== value;
-    row.className = `register-row register-row-special${changed ? " changed" : ""}`;
+    row.className = "register-row register-row-special";
 
     const labelEl = document.createElement("span");
     labelEl.className = "register-label";
     labelEl.textContent = label;
     row.appendChild(labelEl);
 
-    const valueEl = document.createElement("span");
-    valueEl.className = "register-value";
-    valueEl.textContent = this.formatValue(id, value, bitWidth);
-    valueEl.title = "Click to toggle hex/decimal";
-    valueEl.addEventListener("click", () => this.cycleMode(id));
-    row.appendChild(valueEl);
+    const viewer = this.getViewer(id, 8);
+    viewer.update(value, prevValue !== undefined && prevValue !== value);
+    row.appendChild(viewer.element);
 
     return row;
-  }
-
-  private cycleMode(id: string): void {
-    const rowMode = this.getRowMode(id);
-    if (rowMode.mode === "hex") {
-      rowMode.mode = "dec";
-      rowMode.signed = false;
-    } else if (!rowMode.signed) {
-      rowMode.signed = true;
-    } else {
-      rowMode.mode = "hex";
-      rowMode.signed = false;
-    }
-    // Re-render is triggered by the next session notification; force an
-    // immediate repaint here since a display-mode toggle isn't a session event.
-    this.render(this.lastState);
   }
 }

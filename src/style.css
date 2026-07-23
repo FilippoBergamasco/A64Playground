@@ -8,6 +8,9 @@
   --accent: #569cd6;
   --changed: #5a3d00;
   --current-line: #2d3f5e;
+  --fmt-hex: #ffffff;
+  --fmt-udec: #f14c4c;
+  --fmt-sdec: #569cd6;
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 
@@ -117,10 +120,6 @@ body {
   font-size: 0.9em;
 }
 
-.register-row.changed {
-  background: var(--changed);
-}
-
 .register-row-nzcv {
   border-bottom: 1px solid var(--border);
   margin-bottom: 4px;
@@ -145,9 +144,41 @@ body {
   color: var(--muted);
 }
 
-.register-value {
+.data-viewer {
+  display: inline-block;
   cursor: pointer;
   user-select: none;
+  text-align: right;
+  border: 1px solid transparent;
+  padding: 0 2px;
+}
+
+.data-viewer.changed {
+  background: var(--changed);
+}
+
+.data-viewer-w8 {
+  min-width: 20ch;
+}
+
+.data-viewer-w4 {
+  min-width: 11ch;
+}
+
+.data-viewer-w1 {
+  min-width: 4ch;
+}
+
+.data-viewer-hex:hover {
+  border-color: var(--fmt-hex);
+}
+
+.data-viewer-udec:hover {
+  border-color: var(--fmt-udec);
+}
+
+.data-viewer-sdec:hover {
+  border-color: var(--fmt-sdec);
 }
 
 .flag-bit {

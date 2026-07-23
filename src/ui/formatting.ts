@@ -1,11 +1,11 @@
-export function toHex(value: bigint | number, bitWidth: 32 | 64): string {
-  const digits = bitWidth === 32 ? 8 : 16;
-  const mask = bitWidth === 32 ? 0xffffffffn : 0xffffffffffffffffn;
+export function toHex(value: bigint | number, bitWidth: 8 | 32 | 64): string {
+  const digits = bitWidth / 4;
+  const mask = (1n << BigInt(bitWidth)) - 1n;
   const v = (BigInt(value) & mask).toString(16).padStart(digits, "0");
   return `0x${v}`;
 }
 
-export function toDecimal(value: bigint | number, bitWidth: 32 | 64, signed: boolean): string {
+export function toDecimal(value: bigint | number, bitWidth: 8 | 32 | 64, signed: boolean): string {
   const bits = BigInt(bitWidth);
   const mask = (1n << bits) - 1n;
   let v = BigInt(value) & mask;
@@ -13,6 +13,15 @@ export function toDecimal(value: bigint | number, bitWidth: 32 | 64, signed: boo
     v -= 1n << bits;
   }
   return v.toString(10);
+}
+
+export type DataFormat = "hex" | "udec" | "sdec";
+
+export function formatValue(value: bigint, bitWidth: 8 | 32 | 64, format: DataFormat): string {
+  if (format === "hex") return toHex(value, bitWidth);
+  if (format === "udec") return toDecimal(value, bitWidth, false);
+  const dec = toDecimal(value, bitWidth, true);
+  return dec.startsWith("-") ? dec : `+${dec}`;
 }
 
 export function bytesToHex(bytes: Uint8Array): string {
