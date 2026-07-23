@@ -1,0 +1,187 @@
+:root {
+  color-scheme: light dark;
+  --bg: #1e1e1e;
+  --panel-bg: #252526;
+  --border: #3c3c3c;
+  --text: #d4d4d4;
+  --muted: #8a8a8a;
+  --accent: #569cd6;
+  --changed: #5a3d00;
+  --current-line: #2d3f5e;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+}
+
+#app {
+  height: 100vh;
+}
+
+.app-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 8px;
+  height: 100vh;
+  padding: 8px;
+}
+
+.left-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+#editor {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid var(--border);
+  min-height: 0;
+}
+
+.cm-editor {
+  height: 100%;
+}
+
+.cm-current-line {
+  background: var(--current-line);
+}
+
+.right-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  padding: 8px;
+  overflow: auto;
+}
+
+#registers {
+  flex: 1;
+}
+
+#disassembly {
+  flex: 1;
+}
+
+.controls-buttons {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.controls-buttons button {
+  font-family: inherit;
+  padding: 6px 14px;
+  background: var(--panel-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.controls-buttons button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.controls-error {
+  color: #f14c4c;
+  font-size: 0.85em;
+  white-space: pre-wrap;
+  min-height: 1em;
+}
+
+.register-panel-empty,
+.disassembly-empty {
+  color: var(--muted);
+  font-size: 0.9em;
+}
+
+.register-row {
+  display: flex;
+  gap: 10px;
+  padding: 2px 4px;
+  font-size: 0.9em;
+}
+
+.register-row.changed {
+  background: var(--changed);
+}
+
+.register-row-nzcv {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+  padding-bottom: 6px;
+}
+
+.register-row-special {
+  border-top: 1px solid var(--border);
+  margin-top: 2px;
+  padding-top: 4px;
+}
+
+.register-label {
+  width: 80px;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.register-sublabel {
+  width: 40px;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.register-value {
+  cursor: pointer;
+  user-select: none;
+}
+
+.flag-bit {
+  color: var(--muted);
+}
+
+.flag-bit.flag-set {
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.flag-bit.changed {
+  background: var(--changed);
+}
+
+.disassembly-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.disassembly-table td {
+  padding: 2px 8px 2px 0;
+  white-space: nowrap;
+}
+
+.disassembly-address {
+  color: var(--muted);
+}
+
+.disassembly-bytes {
+  color: var(--accent);
+}
+
+tr.current-pc {
+  background: var(--current-line);
+}

@@ -1,0 +1,25 @@
+{
+  "name": "a64-playground",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@alexaltea/keystone-js": "^0.9.2",
+    "@alexaltea/unicorn-js": "^2.1.4",
+    "@codemirror/commands": "^6.9.1",
+    "@codemirror/language": "^6.11.4",
+    "@codemirror/legacy-modes": "^6.5.3",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.38.4",
+    "codemirror": "^6.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.1.5"
+  }
+}
