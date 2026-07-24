@@ -21,22 +21,27 @@
   box-sizing: border-box;
 }
 
+html,
 body {
+  height: 100%;
   margin: 0;
+  overflow: hidden;
+}
+
+body {
   background: var(--bg);
   color: var(--text);
-  height: 100vh;
 }
 
 #app {
-  height: 100vh;
+  height: 100%;
 }
 
 .app-layout {
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
+  grid-template-columns: 1.0fr 1fr; /* left and right column size ratio */
   gap: 8px;
-  height: 100vh;
+  height: 100%;
   padding: 8px;
 }
 
@@ -44,6 +49,7 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
 }
 
 #editor {
@@ -88,6 +94,7 @@ body {
   flex-direction: column;
   gap: 8px;
   min-width: 0;
+  min-height: 0;
 }
 
 .panel {
