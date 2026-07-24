@@ -30,7 +30,7 @@ export class MemoryPanel {
     if (!state.lineMap || state.dataBaseAddress === null || !state.dataMemory) {
       const empty = document.createElement("div");
       empty.className = "memory-panel-empty";
-      empty.textContent = "No `.data` segment in this program.";
+      empty.textContent = "No .data segment in this program.";
       this.container.appendChild(empty);
       return;
     }
