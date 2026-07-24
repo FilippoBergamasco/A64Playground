@@ -15,6 +15,17 @@ export interface AssembleResult {
   failed: boolean;
 }
 
+// Keystone doesn't recognize GNU as's `.dword` (an alias for the 8-byte directive it calls `.xword`).
+// Rewrite it in directive position only, so occurrences inside strings/comments are left untouched.
+const DWORD_DIRECTIVE_RE = /^(\s*(?:[A-Za-z_.$][\w.$]*\s*:\s*)?)\.dword\b/i;
+
+function applyDirectiveAliases(source: string): string {
+  return source
+    .split("\n")
+    .map((line) => line.replace(DWORD_DIRECTIVE_RE, "$1.xword"))
+    .join("\n");
+}
+
 let modulePromise: Promise<KeystoneModule> | null = null;
 
 function loadKeystone(): Promise<KeystoneModule> {
@@ -36,7 +47,7 @@ export async function assemble(source: string, baseAddress: number): Promise<Ass
   const ks = await loadKeystone();
   const encoder = new ks.Keystone(ks.ARCH_ARM64, ks.MODE_LITTLE_ENDIAN);
   try {
-    const result = encoder.asm(source, baseAddress);
+    const result = encoder.asm(applyDirectiveAliases(source), baseAddress);
     return { mc: result.mc, failed: result.failed };
   } finally {
     encoder.close();
