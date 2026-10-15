@@ -1,6 +1,7 @@
 import type { EmulatorSession } from "../core/session";
 import type { SessionState } from "../core/types";
 import { buildShareUrl } from "../core/shareLink";
+import { AboutDialog } from "./aboutDialog";
 
 export class Controls {
   private assembleBtn: HTMLButtonElement;
@@ -34,12 +35,18 @@ export class Controls {
     this.copyLinkBtn.textContent = "Copy Link";
     this.copyLinkBtn.addEventListener("click", () => this.copyShareLink());
 
+    const aboutDialog = new AboutDialog();
+    const aboutBtn = document.createElement("button");
+    aboutBtn.textContent = "About";
+    aboutBtn.className = "controls-about";
+    aboutBtn.addEventListener("click", () => aboutDialog.open());
+
     this.errorEl = document.createElement("div");
     this.errorEl.className = "controls-error";
 
     const buttonRow = document.createElement("div");
     buttonRow.className = "controls-buttons";
-    buttonRow.append(this.assembleBtn, this.stepBtn, this.runBtn, this.resetBtn, this.copyLinkBtn);
+    buttonRow.append(this.assembleBtn, this.stepBtn, this.runBtn, this.resetBtn, this.copyLinkBtn, aboutBtn);
     this.container.append(buttonRow, this.errorEl);
 
     session.subscribe((state) => this.render(state));
