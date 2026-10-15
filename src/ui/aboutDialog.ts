@@ -12,7 +12,7 @@ const ABOUT_HTML = `
 
   <h3>Technologies</h3>
   <ul>
-    <li><a href="https://www.keystone-engine.org/" target="_blank" rel="noopener noreferrer">Keystone</a> &mdash; assembles source code into machine code</li>
+    <li><a href="https://github.com/keystone-engine/keystone" target="_blank" rel="noopener noreferrer">Keystone</a> &mdash; assembles source code into machine code</li>
     <li><a href="https://www.unicorn-engine.org/" target="_blank" rel="noopener noreferrer">Unicorn</a> &mdash; emulates instruction execution</li>
     <li><a href="https://codemirror.net/" target="_blank" rel="noopener noreferrer">CodeMirror</a> &mdash; source code editor</li>
   </ul>
