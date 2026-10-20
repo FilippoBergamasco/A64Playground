@@ -1,5 +1,5 @@
 const ABOUT_HTML = `
-  <h2>A64 Playground</h2>
+  <h2>A64 Playground &mdash; v. 1.0.0</h2>
   <p>&copy; 2026 Ca' Foscari University of Venice</p>
 
   <h3>Purpose</h3>
@@ -37,6 +37,19 @@ const ABOUT_HTML = `
     and there are no accounts, cookies, analytics or tracking. 
     Shared links store the program in the URL fragment
     (the part after <code>#</code>), which browsers never send to the server.
+  </p>
+
+  <h3>License</h3>
+  <p>
+  Copyright (C) 2026 Ca' Foscari University of Venice
+  </p>
+  <p>                                                                              
+  A64 Playground is free software: you can redistribute it and/or modify it 
+  under the terms of the GNU General Public License as published by the Free Software
+  Foundation, either version 3 of the License, or (at your option) any later version.
+  </p>
+  <p>
+  <a href="https://github.com/FilippoBergamasco/A64Playground" target="_blank" rel="noopener noreferrer">Official GitHub repository</a>
   </p>
 `;
 
