@@ -1,5 +1,5 @@
 const ABOUT_HTML = `
-  <h2>A64 Playground &mdash; v. 1.0.0</h2>
+  <h2>A64 Playground &mdash; v. 1.1.0</h2>
   <p>&copy; 2026 Ca' Foscari University of Venice</p>
 
   <h3>Purpose</h3>
