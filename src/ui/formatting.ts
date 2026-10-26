@@ -42,10 +42,12 @@ export function bytesToLEBigInt(bytes: Uint8Array): bigint {
   return v;
 }
 
+export function byteToAscii(b: number): string {
+  return b >= 0x20 && b < 0x7f ? String.fromCharCode(b) : ".";
+}
+
 export function bytesToAscii(bytes: Uint8Array): string {
-  return Array.from(bytes)
-    .map((b) => (b >= 0x20 && b < 0x7f ? String.fromCharCode(b) : "."))
-    .join("");
+  return Array.from(bytes).map(byteToAscii).join("");
 }
 
 export function bytesEqual(a: Uint8Array, b: Uint8Array): boolean {
